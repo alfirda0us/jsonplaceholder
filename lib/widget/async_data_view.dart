@@ -201,7 +201,8 @@ class _AsyncDataViewState<T> extends State<AsyncDataView<T>> {
         // 4. Success State (Responsive + Pull to Refresh)
         return LayoutBuilder(
           builder: (context, constraints) {
-            final isDesktop = constraints.maxWidth > 850;
+            final isDesktop = constraints.maxWidth >= 900;
+            final horizontalPadding = isDesktop ? 32.0 : 16.0;
 
             return RefreshIndicator(
               color: const Color(0xFF6366F1),
@@ -209,34 +210,32 @@ class _AsyncDataViewState<T> extends State<AsyncDataView<T>> {
               child: Center(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxWidth: isDesktop ? 850 : double.infinity,
+                    maxWidth: isDesktop ? 1120 : double.infinity,
                   ),
                   child: Column(
                     children: [
-                      // Header Search & Counter Pill
+                      // Workspace toolbar
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
+                        padding: EdgeInsets.fromLTRB(
+                          horizontalPadding,
+                          isDesktop ? 24 : 12,
+                          horizontalPadding,
+                          12,
+                        ),
                         child: Row(
                           children: [
                             Expanded(
                               child: Container(
-                                height: 44,
+                                height: 46,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(color: const Color(0xFFE2E8F0)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.02),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: const Color(0xFFE8EBF2)),
                                 ),
                                 child: TextField(
                                   controller: _searchController,
                                   decoration: InputDecoration(
-                                    hintText: 'Cari ${widget.title}...',
+                                    hintText: 'Cari ${widget.title.toLowerCase()}...',
                                     hintStyle: TextStyle(
                                       fontSize: 13,
                                       color: Colors.grey.shade400,
@@ -245,7 +244,7 @@ class _AsyncDataViewState<T> extends State<AsyncDataView<T>> {
                                     prefixIcon: const Icon(
                                       Icons.search_rounded,
                                       size: 20,
-                                      color: Color(0xFF6366F1),
+                                      color: Color(0xFF8A90A3),
                                     ),
                                     suffixIcon: _searchQuery.isNotEmpty
                                         ? IconButton(
@@ -259,7 +258,7 @@ class _AsyncDataViewState<T> extends State<AsyncDataView<T>> {
                                           )
                                         : null,
                                     border: InputBorder.none,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 11),
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 13),
                                   ),
                                   onChanged: (val) {
                                     setState(() {
@@ -271,51 +270,49 @@ class _AsyncDataViewState<T> extends State<AsyncDataView<T>> {
                             ),
                             const SizedBox(width: 12),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              height: 46,
+                              padding: const EdgeInsets.symmetric(horizontal: 14),
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    const Color(0xFF6366F1).withValues(alpha: 0.1),
-                                    const Color(0xFF8B5CF6).withValues(alpha: 0.1),
-                                  ],
-                                ),
+                                color: const Color(0xFFF0F0FC),
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: const Color(0xFF6366F1).withValues(alpha: 0.25),
-                                ),
+                                border: Border.all(color: const Color(0xFFE4E4F7)),
                               ),
+                              alignment: Alignment.center,
                               child: Text(
-                                '${items.length} item',
+                                '${items.length} hasil',
                                 style: const TextStyle(
                                   fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF6366F1),
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF5B5BD6),
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-
-                      // Subheader Bar matching Mockup (Total: [Title] [Count] & Tarik ke bawah untuk refresh)
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
+                        padding: EdgeInsets.fromLTRB(
+                          horizontalPadding,
+                          0,
+                          horizontalPadding,
+                          10,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Total: ${widget.title} ${items.length}',
+                              'Semua ${widget.title}',
                               style: const TextStyle(
                                 fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF0F172A),
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF4D5164),
                               ),
                             ),
                             Text(
-                              'Tarik ke bawah untuk refresh',
+                              '${items.length} item',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.grey.shade500,
+                                color: Colors.grey.shade400,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -364,7 +361,12 @@ class _AsyncDataViewState<T> extends State<AsyncDataView<T>> {
                                 ],
                               )
                             : ListView.builder(
-                                padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+                                padding: EdgeInsets.fromLTRB(
+                                  horizontalPadding,
+                                  4,
+                                  horizontalPadding,
+                                  24,
+                                ),
                                 itemCount: items.length,
                                 itemBuilder: (context, index) {
                                   return widget.itemBuilder(context, items[index], index);

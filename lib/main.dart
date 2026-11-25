@@ -10,11 +10,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF6366F1); // Indigo
-    const secondaryColor = Color(0xFF8B5CF6); // Purple
+    const primaryColor = Color(0xFF5B5BD6);
+    const secondaryColor = Color(0xFF8B5CF6);
 
     return MaterialApp(
-      title: 'JSONPlaceholder Pro',
+      title: 'Nexa API',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -24,21 +24,26 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
           surface: Colors.white,
         ),
-        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+        scaffoldBackgroundColor: const Color(0xFFF6F7FB),
         cardTheme: const CardThemeData(
           elevation: 0,
           color: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
-            side: BorderSide(color: Color(0xFFE2E8F0)),
+            side: BorderSide(color: Color(0xFFE8EBF2)),
           ),
         ),
         appBarTheme: const AppBarTheme(
           elevation: 0,
-          scrolledUnderElevation: 1,
+          scrolledUnderElevation: 0,
           backgroundColor: Colors.white,
           foregroundColor: Color(0xFF0F172A),
           centerTitle: false,
+          surfaceTintColor: Colors.transparent,
+        ),
+        dividerTheme: const DividerThemeData(
+          color: Color(0xFFE8EBF2),
+          thickness: 1,
         ),
       ),
       home: const HomePage(),
